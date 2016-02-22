@@ -28,6 +28,10 @@ appspot_headers = {
 secret_key = 'dUe3SE4YsR8B0c30E6r7F2KqpZSbGiVx'
 callproc_key = 'pX9pn8F4JnBpoO8Aa219QC6N7g18FJ0F'
 
+# Converts mmr to the skill rating displayed in the leaderboards
+def mmr_to_skill_rating(mmr):
+	return round(mmr * 20 + 100)
+
 # None or '' means has not even played one game in the playlist
 tiers = {
 	0: 'Unranked',
