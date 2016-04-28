@@ -70,11 +70,11 @@ leaderboard_types = {
 # current time and I have not reverse engineered how this
 # works yet.
 # player_id is the user's steam id if platform is Steam and
-# like the PSN name if platform is ps4 but I did not test that.
+# likely the PSN name if platform is ps4 but I did not test that.
 # build_id too is just copied from the client and seems to increment
 # with updates. It recently turned negative...
-# issuer_id was always 0 in my tests.
-def login(player_name, player_id, auth_code, secret_key=secret_key, platform='Steam', build_id='-1543484724', issuer_id = '0', url=appspot_url, path=login_path):
+# issuer_id was always 0 in my tests. As of 28-04-2016 issuer_id gets set but I dont know in what way.
+def login(player_name, player_id, auth_code, secret_key=secret_key, platform='Steam', build_id='812023742', build_region='', issuer_id = '0', url=appspot_url, path=login_path):
 	headers = { 'LoginSecretKey': secret_key }
 	headers.update(appspot_headers)
 	parameters = {
@@ -82,6 +82,7 @@ def login(player_name, player_id, auth_code, secret_key=secret_key, platform='St
 		'PlayerID': player_id,
 		'Platform': platform,
 		'BuildID': build_id,
+		'BuildRegion', build_region,
 		'AuthCode': auth_code,
 		'IssuerID': issuer_id}
 	r = session.post(url + path, headers=headers, data=parameters, stream=False) #add verify=False to debug with Fiddler
