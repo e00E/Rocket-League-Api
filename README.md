@@ -1,7 +1,8 @@
-Current workflow is to run Rocket League and sniff the Session ID with Fiddler, then put it in your script like in this example:
-
+Example:
 ```
-session_id = 'e1fb5dccb34bb38164a3919ae1e2cfc2'
+from rocket_league_api.rocket_league_api import *
+
+session_id = session_id = cheat_login()
 result = execute_commands([get_skill_leaderboard_v2('10')], session_id) # Get 1v1 leaderboard
 print(result)
 ```
