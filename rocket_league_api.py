@@ -62,6 +62,8 @@ leaderboard_types = {
 	'shots': 'Shots',
 	'assists': 'Assists'}
 
+
+
 # Perform authentication to obtain a session id
 # This function currently only works with some information you
 # need to manually obtain from sniffing the real client's
@@ -82,7 +84,7 @@ def login(player_name, player_id, auth_code, secret_key=secret_key, platform='St
 		'PlayerID': player_id,
 		'Platform': platform,
 		'BuildID': build_id,
-		'BuildRegion', build_region,
+		'BuildRegion': build_region,
 		'AuthCode': auth_code,
 		'IssuerID': issuer_id}
 	r = session.post(url + path, headers=headers, data=parameters, stream=False) #add verify=False to debug with Fiddler
@@ -98,6 +100,21 @@ def login(player_name, player_id, auth_code, secret_key=secret_key, platform='St
 			logging.error('login did not receive expected server answer and no SessionID header, instead it received {}'.format(r.content))
 			raise RuntimeError( "Could not authenticate")
 	return r.headers['SessionID']
+	
+# Some more info about session ids.
+# If you issue any request using maybe every 5 minutes
+# they seem to stay valid for around 5 hours.
+# So you dont need to regenerate them too often.
+
+# There is finally a way to get a valid session id
+# without needing to understand how Psyonix' algorithm
+# works. Apparently with platform set to PS4 any player
+# just gets accepted as valid.
+# Currently we just hardcode a player_id of 0
+# and leave the rest empty.
+def cheat_login():
+	session_id = login('', '1', '', platform='PS4')
+	return session_id
 
 # Peforms an api request
 # This function is usually used via execute_commands.
