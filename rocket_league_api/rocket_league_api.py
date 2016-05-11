@@ -22,7 +22,7 @@ appspot_headers = {
 	'Cache-Control': 'no-cache',
 	'Environment': 'Prod',
 	}
-	
+
 # Hardcoded values in the real client.
 # These are the same for every client afaik.
 secret_key = 'dUe3SE4YsR8B0c30E6r7F2KqpZSbGiVx'
@@ -53,7 +53,7 @@ ranked_game_types = {
 	'11': '2v2',
 	'12': '3v3 solo',
 	'13': '3v3'}
-	
+
 leaderboard_types = {
 	'wins': 'Wins',
 	'goals': 'Goals',
@@ -100,7 +100,7 @@ def login(player_name, player_id, auth_code, secret_key=secret_key, platform='St
 			logging.error('login did not receive expected server answer and no SessionID header, instead it received {}'.format(r.content))
 			raise RuntimeError( "Could not authenticate")
 	return r.headers['SessionID']
-	
+
 # Some more info about session ids.
 # If you issue any request using maybe every 5 minutes
 # they seem to stay valid for around 5 hours.
@@ -163,7 +163,7 @@ def parse_keyvalues(response):
 	# WARNING: currently usernames can contain unescaped '&' and '=' leading
 	# to correct parsing being impossible in some cases.
 	# I sent bug report to psyonix, only they can fix it
-	logging.debug('parse_result called with data {}'.format(response.encode()))
+	logging.debug('parse_result called with data {}'.format(response.encode('utf-8')))
 	parsed_keyvalues = list()
 	lines = response.splitlines()
 	if len(lines) == 0:
@@ -260,7 +260,7 @@ class get_skill_leaderboard_value_for_user_v2steam(Command):
 		mmr = data[0]['MMR']
 		tier = data[0]['Value']
 		return { 'mmr': float(mmr) if mmr != None else None, 'tier': int(tier) if tier != None else None }
-		
+
 class get_skill_leaderboard_value_for_user_v2ps4(Command):
 	def __init__(self, steam_id, game_type):
 		if game_type not in ranked_game_types:
@@ -323,19 +323,19 @@ class get_player_skill_steam(Command):
 				'mmr': float(entry['MMR']) if entry['MMR'] != None else None,
 				'division': int(entry['Division']) if entry['Division'] else None}
 		return results
-		
+
 class get_player_skill_ps4(Command):
 	def __init__(self, name):
 		Command.__init__(self, 'GetPlayerSkillPS4', [name])
 	def parse_result(self, data):
 		return get_player_skill_steam.parse_result(self, data)
-	
+
 class get_leaderboard_rank_for_users_steam(Command):
 	def __init__(self, steam_ids, leaderboard_type):
 		assert(len(steam_ids) <= 100);
 		if leaderboard_type not in leaderboard_types.values():
 			logging.warning('get_leaderboard_rank_for_users_steam created with unknown leaderboard_type {}'.format(leaderboard_type))
-		self.leaderboard_type = leaderboard_type		
+		self.leaderboard_type = leaderboard_type
 		self.steam_ids = steam_ids
 		Command.__init__(self, 'GetLeaderboardRankForUsersSteam', [leaderboard_type] + steam_ids + ['0'] * (100 - len(steam_ids))) #always needs 100 ids, which is why we fill the unused ones with zeroes
 	def parse_result(self, data):
