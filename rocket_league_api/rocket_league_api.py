@@ -272,7 +272,7 @@ class get_skill_leaderboard_value_for_user_v2ps4(Command):
 
 # Get the ranked leaderboard for a playlist.
 # Always returns the top 100 steam and then the top 100 playstation players
-class get_skill_leaderboard_v2(Command):
+class get_skill_leaderboard_v3(Command):
 	def __init__(self, game_type):
 		if game_type not in ranked_game_types:
 			logging.warning('get_skill_leaderboard_v2 created with unknown game_type {}'.format(game_type))
