@@ -44,9 +44,13 @@ tiers = {
 	7: 'Challenger III',
 	8: 'Challenger Elite',
 	9: 'Rising Star',
-	10: 'All Star',
-	11: 'Superstar',
-	12: 'Champion'}
+	10: 'Shooting Star',
+	11: 'All Star',
+	12: 'Superstar',
+	13: 'Champion',
+	14: 'Super Champion',
+	15: 'Grand Champion'
+}
 
 ranked_game_types = {
 	'10': '1v1',
